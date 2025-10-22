@@ -1,0 +1,15 @@
+{
+  "type": "indicator",
+  "name": "ceycey",
+  "data": {
+    "libraryId": "ceycey",
+    "displayName": "ceycey",
+    "options": {
+      "priceScaleId": "right"
+    },
+    "script": "//@version=5\r\nindicator(\"Tick Delta VWAP Scalp Strategy\", overlay=true, timeframe=\"1\")\r\n\r\n// === Tick Delta ===\r\ndelta = volume * (close - open)\r\n\r\n// === Delta EMA ===\r\ndeltaFast = ta.ema(delta, 3)\r\ndeltaSlow = ta.ema(delta, 8)\r\n\r\n// === VWAP ===\r\nvwap = ta.vwap(close)\r\n\r\n// === Giriş Şartları ===\r\nlongCond  = deltaFast > deltaSlow and close > vwap\r\nshortCond = deltaFast < deltaSlow and close < vwap\r\n\r\n// === Çıkış Şartları ===\r\nexitLong = ta.crossunder(deltaFast, deltaSlow)\r\nexitShort = ta.crossover(deltaFast, deltaSlow)\r\n\r\n// === Görsel ===\r\nplot(vwap, color=color.new(color.yellow, 0), title=\"VWAP\")\r\nplotshape(longCond, title=\"Long Entry\", color=color.new(color.lime, 0), style=shape.triangleup, location=location.belowbar, size=size.tiny)\r\nplotshape(shortCond, title=\"Short Entry\", color=color.new(color.red, 0), style=shape.triangledown, location=location.abovebar, size=size.tiny)\r\n\r\n// === Uyarı ===\r\nalertcondition(longCond, title=\"Long Entry\", message=\"✅ Delta + VWAP scalp LONG\")\r\nalertcondition(shortCond, title=\"Short Entry\", message=\"🚨 Delta + VWAP scalp SHORT\")\r\n\r\nbgcolor(longCond ? color.new(color.lime, 90) : shortCond ? color.new(color.red, 90) : na)",
+    "createdAt": 1761095791143,
+    "updatedAt": 1761095793107,
+    "presets": []
+  }
+}
